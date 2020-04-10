@@ -1,4 +1,4 @@
-TITLE = 2020_acic_mediation
+TITLE = 2020_berkeley_medshift
 
 .PHONY : all
 all: $(TITLE).pdf notes clean

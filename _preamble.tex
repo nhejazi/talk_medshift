@@ -1,0 +1,181 @@
+% specifications for presenter mode
+%\beamerdefaultoverlayspecification{<+->}
+%\setbeamercovered{transparent}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+%\usepackage{coloremoji}
+\usepackage{layout}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{graphicx}
+\graphicspath{ {figs/} }
+\usepackage{animate}
+
+\setbeameroption{hide notes}
+\setbeamertemplate{note page}[plain]
+\usepackage{listings}
+\usepackage{datetime}
+\usepackage{url}
+\usepackage{tcolorbox}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{tikz}
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+\usetikzlibrary{arrows,positioning}
+\tikzset{
+  % Define standard arrow tip
+  >=stealth',
+  % Define style for boxes
+  punkt/.style={
+    rectangle,
+    rounded corners,
+    draw=black, very thick,
+    text width=6.5em,
+    minimum height=2em,
+    text centered},
+  % Define arrow style
+  pil/.style={
+    ->,
+    thick,
+    shorten <=2pt,
+    shorten >=2pt,}
+}
+
+\newcommand{\Vertex}[2]% pos, name
+{\node[minimum width=0.6cm,inner sep=0.05cm] (#2) at (#1) {$\footnotesize#2$};
+  % \node[circle,draw,minimum width=0.6cm,inner sep=0] (#2) at (#1) {};
+  % \node[rounded corners=3pt,below,draw=black,fill=white,inner sep=1.5pt] at (#2.south) {\footnotesize#2};
+}
+\newcommand{\Vertexr}[2]% pos, name
+{\node[rectangle, draw, minimum width=0.6cm,inner sep=0.05cm] (#2) at (#1) {$\footnotesize#2$};
+  % \node[circle,draw,minimum width=0.6cm,inner sep=0] (#2) at (#1) {};
+  % \node[rounded corners=3pt,below,draw=black,fill=white,inner sep=1.5pt] at (#2.south) {\footnotesize#2};
+}
+\newcommand{\EdgeR}[3]%
+{ \begin{pgfonlayer}{background}
+    \draw[dashed,#3] (#1) to[bend right=30] (#2);
+  \end{pgfonlayer}
+}
+\newcommand{\EdgeL}[3]%
+{ \begin{pgfonlayer}{background}
+    \draw[dashed,#3] (#1) to[bend left=30] (#2);
+  \end{pgfonlayer}
+}
+\newcommand{\EdgeLL}[3]%
+{ \begin{pgfonlayer}{background}
+    \draw[dashed,#3] (#1) to[bend left=90] (#2);
+  \end{pgfonlayer}
+}
+\newcommand{\Arrow}[3]%
+{ \begin{pgfonlayer}{background}
+    \draw[->,#3] (#1) -- (#2);
+  \end{pgfonlayer}}
+
+\newcommand{\ArrowR}[3]%
+{ \begin{pgfonlayer}{background}
+    \draw[->,#3] (#1) to[bend right=30] (#2);
+  \end{pgfonlayer}
+}
+\newcommand{\ArrowL}[3]%
+{ \begin{pgfonlayer}{background}
+    \draw[->,#3] (#1) to[bend left=45] (#2);
+  \end{pgfonlayer}
+}
+
+\AtBeginSection[]{
+  \begin{frame}
+    \vfill
+    \centering
+    \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+      \usebeamerfont{title}\insertsectionhead\par%
+    \end{beamercolorbox}
+    \vfill
+  \end{frame}
+}
+
+% math shorthand
+\usepackage{bm}
+\usepackage{amscd}
+\usepackage{amsthm}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\pr}{\mathbb{P}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\lik}{\mathcal{L}}
+\newcommand{\dd}{\mathrm{d}}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\odds}{odds}
+\DeclareMathOperator{\supp}{supp}
+
+\newtheorem*{assumption*}{\assumptionnumber}
+\providecommand{\assumptionnumber}{}
+\makeatletter
+\newenvironment{assumption}[2]
+ {%
+  \renewcommand{\assumptionnumber}{Assumption #1: $\mathcal{#2}$}%
+  \begin{assumption*}%
+  \protected@edef\@currentlabel{#1: $\mathcal{#2}$}%
+ }
+ {%
+  \end{assumption*}
+ }
+\makeatother
+
+\DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{%
+  #1\;\delimsize\|\;#2%
+}
+\newcommand{\infdiv}{D\infdivx}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% indepndence notation macro
+\newcommand\indep{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+% Bibliography
+\usepackage{natbib}
+\bibpunct{(}{)}{,}{a}{}{;}
+\usepackage{bibentry}
+
+\title{\normalsize Causal mediation analysis for stochastic interventions}
+
+\author{\href{https://nimahejazi.org}{Nima Hejazi}\\[-10pt]}
+
+\institute{
+  \begin{figure}[!htb]
+    \centering
+    \begin{minipage}{.65\textwidth}
+        Graduate Group in Biostatistics, and \\
+        Center for Computational Biology, \\
+        University of California, Berkeley \\[6pt]
+        \includegraphics[scale=0.12]{twitter-icon.png}
+          \href{https://twitter.com/nshejazi}{nshejazi} \\
+        \includegraphics[scale=0.09]{github-icon.png}
+          \href{https://github.com/nhejazi}{nhejazi} \\
+        \includegraphics[scale=0.12]{homepage.png}
+          \href{https://nimahejazi.org}{nimahejazi.org} \\
+        \includegraphics[scale=0.12]{pdf-icon.png}
+        \href{https://bit.ly/2020\_berkeley\_medshift}{bit.ly/2020\_berkeley\_medshift} \\
+        {\scriptsize joint work with Iv\'an D\'iaz (Weill Cornell Medicine)}
+    \end{minipage}%
+    \begin{minipage}{0.35\textwidth}
+      \centering
+      \includegraphics[height=0.80in,width=0.80in]{ucberkeleyseal_874_540.eps}
+    \end{minipage}
+  \end{figure}
+}
+
+\date{\today}
