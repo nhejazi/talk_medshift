@@ -1,5 +1,6 @@
 \documentclass{beamer}
 \usetheme{metropolis}
+%\usecolortheme{owl}
 \include{_preamble}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -17,7 +18,7 @@
   \begin{columns}[c]
     \column{0.5 \textwidth}
     \begin{itemize}
-    \item     Observed world
+    \item Observed world
       \begin{align*}
         W&=f_W(U_W)\\
         A&=f_A(W, U_A)\\
@@ -27,7 +28,7 @@
     \end{itemize}
     \column{0.5 \textwidth}
     \begin{itemize}
-    \item     Intervened world
+    \item Intervened world
       \begin{align*}
         W&=f_W(U_W)\\
         A&=a\\
@@ -40,9 +41,8 @@
   \vspace{2mm}
 
   \begin{itemize}
-    \item Also consider counterfactual $Y(a, z)=f_Y(W,
-      a, z, U_Y)$
-    \item Note that $Y(a, Z(a))=Y(a)$
+    \item Also consider counterfactual $Y(a, z)=f_Y(W, a, z, U_Y)$
+    \item Note that $Y(a, Z(a)) = Y(a)$
   \end{itemize}
   \begin{figure}[!htb]
     \centering
@@ -70,29 +70,39 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Natural (in)direct effect}
+\begin{frame}{Natural (in)direct effects}
 
 Counterfactuals:
   \[Y(1) = f_Y(W, 1, Z(1), U_Y);\quad\quad Y(0) = f_Y(W, 0, Z(0),
     U_Y)\]
 Average treatment effect:
   \begin{align*}
-   \text{ATE}  &= \E\{Y(1) - Y(0)\}\\
+   \psi_{\text{ATE}} &= \E\{Y(1) - Y(0)\}\\
                  &=\underbrace{\E\{Y(1, Z(1)) -
-                   Y(1, Z(0))\}}_{\text{indirect effect}} +
+                   Y(1, Z(0))\}}_{\text{natural indirect effect}} +
                    \underbrace{\E\{Y(1, Z(0)) -
-                   Y(0, Z(0))\}}_{\text{direct effect}}
+                   Y(0, Z(0))\}}_{\text{natural direct effect}}
   \end{align*}
   \begin{block}{Problems}
     \begin{itemize}
+      \item Focuses on binary exposures and static interventions
       \item Needs cross-world counterfactual independencies
-      \item Focuses on binary treatments
-      \item Requires identification of exposure-mediator effect
-      \item Requires positivity
+      \item Requires identification of the exposure-mediator effect
+      \item Requires positivity of exposure and mediator mechanisms
     \end{itemize}
   \end{block}
 
 \note{
+  \begin{itemize}
+    \item ``Cross-world'' counterfactual independencies: independencies on
+      counterfactual variables indexed by distinct hypothetical interventions.
+    \item Consequently, these effects are not identifiable in a randomized
+    trial (no valid randomization that performs the joint intervention); thus,
+    scientific claims obtained from these models are not falsifiable through
+    experimentation.
+  \item Two routes around ``cross-world'': set identification (of bounds) and
+    alternative effect definitions.
+\end{itemize}
 }
 
 \end{frame}
@@ -101,16 +111,16 @@ Average treatment effect:
 
 \begin{frame}{Stochastic interventions}
   \begin{definition}
-    \textit{Stochastic interventions} yield a post-intervention exposure
-    which is a random variable after conditioning on $W$.
+    \textit{Stochastic interventions} yield a post-intervention exposure that
+    is itself a random variable after conditioning on covariates $W$.
   \end{definition}
 
 \vspace{2mm}
 
   We will study two types of stochastic interventions:
   \begin{itemize}
-    \item Modified treatment policies
-    \item Exponential tilting
+    \item Modified treatment policies $d(A,W)$.
+    \item Exponential tilting.
   \end{itemize}
 
 \note{
@@ -122,20 +132,21 @@ Average treatment effect:
 
 \begin{frame}{Modified treatment policies}
     \begin{itemize}
-      \item Consider a hypothetical world where the treatment received
-        is some function $d(A,W)$ of the treatment \textit{actually}
-        received and covariates
+      \item Consider a hypothetical world where the treatment received is
+        some function $d(A,W)$ of the treatment \textit{actually} received
+        $A$ and covariates $W$.
     \end{itemize}
-    \begin{example}[Haneuse and Rotnitzky, 2013]
+    \begin{example}[\cite{haneuse2013estimation}]
       \begin{itemize}
         \item What is the impact of operating time on outcomes for patients
-          undergoing surgical resection for non-small-cell lung cancer
-        \item Can answer using a hypothetical intervention
-          $d(A,W) = A-\delta$ for user-given $\delta$
-        \item Denote the post-intervention exposure $A_\delta=d(A,W)$
+          undergoing surgical resection for non-small-cell lung cancer.
+        \item We can answer this using a hypothetical intervention
+          $d(A,W) = A-\delta$ for user-supplied $\delta$.
+        \item Denote the post-intervention exposure $A_\delta = d(A,W)$
         \item Non-parametric definition of effects with an interpretation
-          that is familiar to users of OLS regression adjustment
-        \item We assume piecewise smooth invertibility of $d(\cdot, w)$
+          that is familiar to users of OLS regression adjustment.
+        \item Requires assuming piecewise smooth invertibility of
+        $d(\cdot, w)$.
       \end{itemize}
     \end{example}
 
@@ -146,28 +157,26 @@ Average treatment effect:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Exponential tilt}
+\begin{frame}{Exponential tilting}
   \begin{itemize}
-  \item Consider an intervention that changes the exposure
-    distribution conditional on covariates from $g(a\mid w)$ to
+  \item Consider an intervention that changes the exposure distribution
+    conditional on covariates from $g(a\mid w)$ to
     $g_\delta(a\mid w)$, where
     \begin{equation*}
       g_\delta(a \mid w) \propto \exp(\delta a) g(a \mid w)
     \end{equation*}
-  \item Denote $A_\delta$ a draw from this post-intervention
-    distribution $g_\delta$
+  \item Denote by $A_\delta$ a draw from post-intervention distribution
+    $g_\delta$.
   \end{itemize}
-  \begin{example}[Kennedy, 2018]
+  \begin{example}[\cite{kennedy2017nonparametric}]
     \begin{itemize}
-    \item \textit{Incremental propensity score interventions.} For
-    binary $A$, define
+    \item \textit{Incremental propensity score interventions.} For binary $A$,
       \begin{equation*}
         g_\delta(1 \mid w) = \frac{\delta g(1 \mid w)}{\delta g(1 \mid w) + 1
           - g(1\mid w)},
       \end{equation*}
 
-    \item Here
-      $ \odds\{A_\delta= 1\mid W=w\} = \delta\odds\{A=1\mid W=w\}$
+    \item Here, $\odds\{A_\delta= 1\mid W=w\} = \delta\odds\{A=1\mid W=w\}$.
     \end{itemize}
   \end{example}
 
@@ -180,20 +189,20 @@ Average treatment effect:
 
 \begin{frame}{Population intervention effect}
   \begin{itemize}
-  \item For $A_\delta= d(A,W)$ (modified treatment policy), or
-    $A_\delta$ a draw from $g_\delta(\cdot\mid W)$, define the causal
-    effect of $A$ on $Y$ as
+  \item For $A_\delta= d(A,W)$ (modified treatment policy), or $A_\delta$
+   being a draw from $g_\delta(\cdot\mid W)$, define the population
+   intervention effect (PIE) of $A$ on $Y$ as
     \begin{align*}
-        \psi(\delta) &= \E\{Y(A_\delta) - Y\}\\
-                     &=\underbrace{\E\{Y(A_\delta, Z(A_\delta)) -
+        \psi_{\text{PIE}}(\delta) &= \E\{Y(A_\delta) - Y\}\\
+                     &=\underbrace{\E\{Y(A_{\delta}, Z(A_{\delta})) -
           Y(A_\delta, Z)\}}_{\text{indirect effect}} +
           \underbrace{\E\{Y(A_\delta, Z) -
           Y(A, Z)\}}_{\text{direct effect}}.
     \end{align*}
-  \item Identification and estimation of $\E\{Y(A_\delta)\}$ is done
-    elsewhere (e.g., D\'iaz and van der Laan (2012), Kennedy (2018))
-  \item In the sequel we focus on
-    \[\theta(\delta) = \E\{Y(A_\delta, Z)\}\]
+  \item Identification and estimation of $\E\{Y(A_{\delta}, Z(A_{\delta})\}$
+    has been done \cite[e.g.,][]{diaz2012population,kennedy2017nonparametric}.
+  \item \cite{diaz2020causal} focus on the decomposition term
+    $\theta(\delta) = \E\{Y(A_{\delta}, Z)\}$
   \end{itemize}
 
 \note{
@@ -278,12 +287,12 @@ Average treatment effect:
     w)g_\delta(a\mid w)p(z,w)\dd\nu(a,z,w),
   \end{equation*}
 where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
-  \begin{block}{Compared to NDE and NIE:}
+  \begin{block}{Compared to the natural (in)direct effects:}
     \begin{itemize}
-    \item No cross-world independence assumptions
-    \item No need to identify exposure-mediator effect
-    \item Positivity guaranteed by definition
-    \item Non-parametric effects for continuous treatments
+    \item No cross-world independence assumptions.
+    \item No need to identify exposure-mediator effect.
+    \item Positivity guaranteed by definition.
+    \item Allows nonparametric effects for continuous exposures.
     \end{itemize}
   \end{block}
 
@@ -306,10 +315,10 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
   where $e$ is the pdf of $A\mid Z,W$:
   \[e(a \mid z, w) = \frac{g(a\mid w) p(z\mid a, w)}{p(z\mid w)}.\]
   \begin{itemize}
-  \item The above formulas may be used to construct G-computation and
-    IPW estimators
-  \item If the nuisance parameters estimators are data-adaptive,
-    G-comp and IPW are not generally $n^{1/2}$-consistent
+  \item The above formulas may be used to construct the classical G-computation
+    and IPW estimators.
+  \item If the nuisance parameters estimators are data-adaptive, G-computation
+    and IPW generally fail to be $n^{1/2}$-consistent.
   \end{itemize}
 
 \note{
@@ -327,7 +336,7 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
   \item De-bias $\theta_{\hat P}(\delta)$ by computing
     \[\tilde \theta(\delta) = \theta_{\hat P}(\delta) +
       \frac{1}{n}\sum_{i=1}^n D_{\hat P}(O_i)\]
-  \item In the non-parametric model there is only one such $D_P$, it
+  \item In the nonparametric model there is only one such $D_P$; it
     is referred to as \textit{canonical gradient} or \textit{efficient
       influence function}.
   \end{itemize}
@@ -336,183 +345,6 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
 }
 
 \end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Weak convergence for exponential tilting}
-  \begin{itemize}
-    \item $D_P$ does not depend on all of $P$, just on $\eta=(m,g,e,\phi)$
-    \item Use cross-fitting to estimate $m$, $g$, $e$, $\phi$: E.g.,
-      for computing $\hat m(O_i)$, use training data not containing
-      $O_i$.
-  \item Assume some second order terms converge. E.g,
-    $||\hat{m} - m||||\hat{g} - g|| = o_P(n^{-1/2}).$
-      \item   Then
-        $\sqrt{n}\{\tilde \theta(\delta) - \theta(\delta)\} \rightsquigarrow
-          N(0;\var\{D_{\eta} (O)\})$
-      \item This result can be made uniform in intervals $[\delta_l,\delta_u]$
-  \end{itemize}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Some more notes on one-step estimator}
-  \begin{itemize}
-  \item Estimator is efficient under second order consistency
-    assumption in previous slide
-  \item Uniform result can be used to test the hypothesis of no
-    direct effect (Kennedy 2018)
-    \[H_0 : \sup_{\delta \in \Delta} \theta(\delta) =
-      E(Y)\]
-  \end{itemize}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Multiple robustness}
-  \begin{itemize}
-  \item \textit{Modified treatment policies:} Assume piecewise smooth
-    invertibility of $d(\cdot, w)$, and define $r(z\mid w) = p(z\mid w)$.
-    Consistency requires:
-    \begin{enumerate}
-      \item $g_1=g$ and either $e_1=e$ or $m_1=m$, or
-      \item $m_1=m$ and either $g_1=g$ or $r_1=r$.
-    \end{enumerate}
-    Intuition: use change of variable formula to get
-    \[\theta(\delta) = \E\left\{\int m(d(A,W),z,W)r(z \mid,
-        W)\dd\nu(z)\right\}.\]
-  \item \textit{Exponential tilt:} consistency requires that $g_1 = g$ and
-    either $e_1 = e$ or $m_1 = m$
-  \end{itemize}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Numerical studies}
-  \begin{figure}[H]
-    \hspace*{-1.5cm}
-    \centering
-    \includegraphics[scale=0.3]{plot_jrssb}
-    % \caption{Statistics for the three key estimators (and variations
-    %   thereof) of the direct effect under an IPS intervention
-    %   $\delta = 0.5$, across $1000$ Monte Carlo simulations for each of
-    %   seven sample sizes.}
-    % \label{fig:all_metric_comparison}
-  \end{figure}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Some notes and next steps}
-  \begin{itemize}
-  \item Nonparametric efficient estimation of effects using
-    data-adaptive regression and cross-fitting:
-    \begin{itemize}
-    \item Avoid reliance on misspecified parametric models
-    \item Cross-fitting helps keep the function classes unrestricted
-    \end{itemize}
-  \item Working on adaptations to mediator-outcome confounders
-    affected by treatment
-  \item Proposed one-step estimator has optimal asymptotic guarantees, but we
-    have no finite-sample results
-    \begin{itemize}
-    \item TMLE may have better finite sample properties (by virtue of
-      being an MLE)
-    \end{itemize}
-  \end{itemize}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Software and manuscript}
-  Last, but not least, check out our \texttt{R} package and paper:
-  \begin{itemize}
-  \item \texttt{R} package: \url{https://github.com/nhejazi/medshift}
-  \item Integrated in the \texttt{tlverse} targeted learning ecosystem
-  \item Paper (JRSS-B): \url{https://doi.org/10.1111/rssb.12362}
-  \item arXiv pre-print: \url{https://arxiv.org/abs/1901.02776}
-  \item We would love to hear your input:
-    \begin{itemize}
-    \item[-] ild2005@med.cornell.edu
-    \item[-] nhejazi@berkeley.edu
-    \end{itemize}
-  \end{itemize}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Population Intervention (In)Direct Effects}
-\begin{center}
-\begin{itemize}
-\itemsep2pt
-\item Consider observed data $O = (W, A, Z, Y) \sim P_0 \in \mathcal{M}$, with
-  no assumptions on nonparametric model $\mathcal{M}$.
-\item \cite{diaz2020causal} decompose the total population intervention effect
-  (PIE) in terms of a \textit{direct effect (PIDE)} and an \textit{indirect
-  effect (PIIE)}:
-  \begin{equation*}
-    \psi(\delta) = \overbrace{\mathbb{E}\{Y(A_\delta, Z(A_\delta)) -
-       Y(A_\delta, Z)\}}^{\text{PIIE}} + \overbrace{\mathbb{E}\{Y(A_\delta, Z)
-       - Y(A, Z)\}}^{\text{PIDE}}.
-  \end{equation*}
-\item The causal parameter $\mathbb{E}\{Y(A_\delta, Z)\}$ is required for
-  estimation of the PIIE or PIDE; other components already estimable.
-\end{itemize}
-\end{center}
-
-\note{
-}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}[c]{Population Intervention (In)Direct Effects}
-
-\begin{center}
-\begin{itemize}
-\itemsep2pt
-\item \cite{diaz2020causal} show $\mathbb{E}\{Y(A_\delta, Z)\}$ is identified by
-  \begin{equation*}
-    \theta(\delta) = \int m(z, a, w)g_{\delta}(a\mid w)p(z,w) d\nu(a,z,w),
-  \end{equation*}
-  for outcome mechanism $m(z,a,w)$ and post-intervention treatment mechanism
-  $g_{\delta}(a\mid w)$.
-\item Efficient influence function (EIF) for $\theta(\delta)$ in $\mathcal{M}$
-  is given with 3 components $D^Y_{\eta, \delta}(o) + D^A_{\eta, \delta}(o) +
-  D^{Z, W}_{\eta, \delta}(o)$, where $\eta$ indexes nuisance parameters.
-\end{itemize}
-\end{center}
-
-\note{
-}
-
-\end{frame}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -545,6 +377,53 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
 
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Weak convergence for exponential tilting}
+  \begin{itemize}
+    \item $D_P$ does not depend on all of $P$, just on $\eta=(m,g,e,\phi)$.
+    \item Construct cross-validated estimates of $m$, $g$, $e$, $\phi$ ---
+      i.e., for computing $\hat m(O_i)$, use training data not containing $O_i$.
+  \item Assume convergence of certain second-order terms --- e.g.,
+    $\lVert \hat{m} - m\rVert \lVert\hat{g} - g\rVert = o_P(n^{-1/2})$.
+  \item Then,
+        $\sqrt{n}\{\tilde \theta(\delta) - \theta(\delta)\} \rightsquigarrow
+          N(0;\var\{D_{\eta} (O)\})$.
+   \item This result can be made uniform in intervals $[\delta_l,\delta_u]$
+  \item Uniform result can be used to test the hypothesis of no
+    direct effect \citep{kennedy2017nonparametric}:
+    $H_0 : \sup_{\delta \in \Delta} \theta(\delta) = \E(Y)$.
+  \end{itemize}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Multiple robustness}
+  \begin{itemize}
+  \item \textit{Modified treatment policies:} Assume piecewise smooth
+    invertibility of $d(\cdot, w)$, and define $r(z\mid w) = p(z\mid w)$.
+    Consistency requires:
+    \begin{enumerate}
+      \item $g_1=g$ and either $e_1=e$ or $m_1=m$, or
+      \item $m_1=m$ and either $g_1=g$ or $r_1=r$.
+    \end{enumerate}
+    Intuition: use change of variable formula to get
+    \[\theta(\delta) = \E\left\{\int m(d(A,W),z,W)r(z \mid,
+        W)\dd\nu(z)\right\}.\]
+  \item \textit{Exponential tilt:} consistency requires that $g_1 = g$ and
+     either $e_1 = e$ or $m_1 = m$.
+  \end{itemize}
+
+\note{
+}
+
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[c]{TML Estimator for $\theta(\delta)$}
@@ -563,8 +442,8 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
   \item Avoid entropy conditions by cross-validation \citep{zheng2011cross,
     chernozhukov2016double}, so let $j(i)$ be the index of the validation set
     containing observation $i$.
-  \item For the targeting step, we'll use the method of universal least
-    favorable submodels \citep{vdl2016one}.
+  \item Use universal least favorable submodels \citep{vdl2016one} for the
+    targeting step.
 \end{itemize}
 \end{center}
 
@@ -579,7 +458,7 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
 
 \begin{center}
 \begin{itemize}
-  \itemsep6pt
+  \itemsep8pt
   \item $\hat{g}_{\delta}^{\star}(a \mid w)$ generated via \textit{targeting}
     fluctuation that tilts initial estimates towards solutions of the score
     $\frac{1}{n}\sum_{i=1}^n D^A(O_i) = 0$:
@@ -605,15 +484,16 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
       \item Use the term before the residual $y - m(z,a,w)$ in $D^Y$ as the
         covariate in this regression (treating initial estimate as offset).
   \end{itemize}
-  %\item Could also do less aggressive targeting as
-    %per~\cite{pmlr-v97-bibaut19a}.
-  \item Stops when appropriate component of EIF is nearly solved, i.e.,
-    $\frac{1}{n}\sum_{i=1}^n D^{\{Y, A\}}(O_i) < \frac{1}{n}$ or
-    $\frac{\sigma^2(D)}{\log n}$.
 \end{itemize}
 \end{center}
 
 \note{
+\begin{itemize}
+  %\item Could also do less aggressive targeting as per~\cite{pmlr-v97-bibaut19a}.
+  \item Stops when appropriate component of EIF is nearly solved, i.e.,
+    $\frac{1}{n}\sum_{i=1}^n D^{\{Y, A\}}(O_i) < \frac{1}{n}$ or
+    $\frac{\sigma^2(D)}{\log n}$.
+\end{itemize}
 }
 
 \end{frame}
@@ -626,7 +506,7 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
 \begin{itemize}
   \itemsep2pt
   \item The \underline{\texttt{medshift} \texttt{R} package}
-    \citep{hejazi2019medshift} implements TML estimator with state-of-the-art
+    \citep{hejazi2020medshift} implements TML estimator with state-of-the-art
     machine learning.
     \begin{itemize}
       \item Access all estimators via the eponymous \texttt{medshift()}
@@ -638,7 +518,7 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
         package.
     \end{itemize}
   \item \texttt{sl3}, \texttt{tmle3}, and \texttt{origami} are the 3 core
-    engines of the new \textbf{\texttt{tlverse}} software ecosystem
+    engines of the \textbf{\texttt{tlverse}} software ecosystem
     (\url{https://tlverse.org}).
     \begin{itemize}
       \item Our handbook: \url{https://tlverse.org/tlverse-handbook}
@@ -646,6 +526,54 @@ where $m(a, z, w) = \E(Y\mid A=a, Z=z, W=w)$.
 \end{itemize}
 \includegraphics[origin=c,scale=0.3]{tlverse}
 \end{center}
+
+\note{
+}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Numerical studies}
+  \begin{figure}[H]
+    \hspace*{-1.5cm}
+    \centering
+    \includegraphics[scale=0.3]{plot_jrssb}
+    % \caption{Statistics for the three key estimators (and variations
+    %   thereof) of the direct effect under an IPS intervention
+    %   $\delta = 0.5$, across $1000$ Monte Carlo simulations for each of
+    %   seven sample sizes.}
+    % \label{fig:all_metric_comparison}
+  \end{figure}
+
+\note{
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Some notes and next steps}
+  \begin{itemize}
+  \item Nonparametric efficient estimation of effects using
+    data-adaptive regression and cross-validation
+    \begin{itemize}
+      \item Avoid reliance on misspecified parametric models.
+      \item Cross-validation helps keep the function classes unrestricted.
+    \end{itemize}
+  \item Working on adaptations to mediator-outcome confounders
+    affected by treatment.
+  \item \texttt{R} package: \url{https://github.com/nhejazi/medshift}
+  \item Integrated in the \texttt{tlverse} targeted learning ecosystem
+  \item Paper (JRSS-B): \url{https://doi.org/10.1111/rssb.12362}
+  \item arXiv pre-print: \url{https://arxiv.org/abs/1901.02776}
+  \item We would love to hear your input:
+    \begin{itemize}
+    \item[-] ild2005@med.cornell.edu
+    \item[-] nhejazi@berkeley.edu
+    \end{itemize}
+  \end{itemize}
 
 \note{
 }
@@ -689,44 +617,48 @@ Slides: \href{http://bit.ly/2020\_berkeley\_medshift}{bit.ly/2020\_berkeley\_med
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\appendix
-%\begin{frame}[standout]
-  %Appendix
-%\end{frame}
+\appendix
+\begin{frame}[standout]
+  Appendix
+\end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[c]{\cite{haneuse2013estimation}}
 
-%\begin{frame}[c]{Nonparametric Conditional Density Estimation}
+\begin{center}
+\begin{itemize}
+  \itemsep10pt
+  \item \textit{Proposal:} Characterization of stochastic interventions as
+    \textit{modified treatment policies} (MTPs).
+  \item Assumption of \textit{piecewise smooth invertibility} allows for the
+    intervention distribution of any MTP to be recovered:
+    \begin{equation*}
+      g_{0, \delta}(a \mid w) = \sum_{j = 1}^{J(w)} I_{\delta, j} \{h_j(a, w),
+      w\} g_0\{h_j(a, w) \mid w\} h^{'}_j(a,w)
+    \end{equation*}
+  \item Such intervention policies account for the natural value of the
+    intervention $A$ directly yet are interpretable as the imposition of an
+    altered intervention mechanism.
+  \item Identification conditions for assessing the parameter of interest under
+    such interventions appear technically complex (at first).
+\end{itemize}
+\end{center}
 
-%\begin{center}
-%\begin{itemize}
-  %\itemsep8pt
-  %\item To compute the auxiliary covariate $H(a,w)$, we need to estimate
-    %conditional densities $g(A \mid W)$ and $g(A - \delta \mid W)$.
-  %\item There is a rich literature on density estimation, we follow the approach
-    %proposed in \cite{diaz2011super}.
-  %\item To build a conditional density estimator, consider
-    %\begin{equation*}
-      %g_{n, \alpha}(a \mid W) = \frac{\pr (A \in [\alpha_{t-1}, \alpha_t)
-        %\mid W)}{\alpha_t - \alpha_{t-1}},
-    %\end{equation*}
-    %for $\alpha_{t-1} \leq a < \alpha_t$.
-    %\vspace{0.5em}
-    %\begin{itemize}
-      %\itemsep4pt
-      %\item This is a classification problem, where we estimate the probability
-        %that a value of $A$ falls in a bin $[\alpha_{t-1}, \alpha_t)$.
-      %\item The choice of the tuning parameter $t$ corresponds roughly to the
-        %choice of bandwidth in classical kernel density estimation.
-    %\end{itemize}
-%\end{itemize}
-%\end{center}
+\note{
+  \begin{itemize}
+    \item Shifts of the form $d(A,W)$ are considerably more interesting since
+      these are realistic intervention policies.
+    \item Example: consider an individual with an extremely high immune response
+      but whose baseline covariates $W$ suggest we shift the response still
+      higher. Such a shift may not be biologically plausible (impossible, even)
+      but we cannot account for this if the shift is only a function of $W$.
+    \item The authors build IPW, outcome regression, and non-iterative doubly
+      robust estimators, as well as an approach based on MSMs.
+    \item Piecewise smooth invertibility: This assumption ensures that we can
+      use the change of variable formula when computing integrals over $A$ and
+      it is useful to study the estimators that we propose in this paper.
+  \end{itemize}
+}
 
-%\note{
-%}
-
-%\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{frame}
 
 \end{document}
